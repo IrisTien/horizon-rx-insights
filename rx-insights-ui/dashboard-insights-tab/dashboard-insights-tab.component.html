@@ -1,0 +1,35 @@
+<div class="dashboard-insights">
+  <div class="card">
+    <div class="card-block">
+      <clr-select-container class="mt-0" *ngIf="!noData && !loading && !showError">
+        <select clrSelect name="chartMode" [(ngModel)]="chartMode" (change)="onModeChange($event.target.value)">
+          <option value="hierarchy">Hierarchy</option>
+          <option value="dynamic">Dynamic</option>
+          <option value="radial">Radial</option>
+        </select>
+      </clr-select-container>
+      <div class="chart-legends" *ngIf="!noData && !loading && !showError">
+        <ng-container *ngFor="let legend of nodeLegends">
+          <div class="legend-container">
+            <img class="legend-img" src="{{legend.style.image}}" />
+            <span>{{legend.className}}</span>
+          </div>
+        </ng-container>
+      </div>
+      <div id="chart"></div>
+    </div>
+  </div>
+  <app-dashboard-insights-health *ngIf="showHealth" [rxHealthData]="rxHealthData"></app-dashboard-insights-health>
+  <div id="tooltip" class="tooltip">
+    <div class="clr-row">
+      <ng-container *ngFor="let item of tooltipData">
+        <div class="clr-col-sm-2 tooltip-item tooltip-item-label">
+          <label>{{item.label}}</label>
+        </div>
+        <div class="clr-col-sm-10 tooltip-item">
+          <span>{{item.content}}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

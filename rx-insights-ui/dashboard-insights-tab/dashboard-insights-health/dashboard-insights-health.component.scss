@@ -1,0 +1,109 @@
+@import '../../../../../styles/core/colors';
+
+.dashboard-insights-health {
+  .card-tab-container {
+    margin: 0;
+  }
+
+  .card-tab {
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-bottom: 1px solid $grey-10;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .card-tab:first-child {
+    margin-left: 0.5rem;
+  }
+
+  .card-tab:last-child {
+    margin-right: 0.5rem;
+  }
+
+  .card-tab-divider {
+    float: right;
+    height: 100%;
+    width: 1px;
+    background: $grey-10;
+  }
+
+  .card-tab-selected::after,
+  .card-tab-selected::before {
+    border: solid transparent;
+    content: ' ';
+    height: 0;
+    bottom: 100%;
+    position: absolute;
+    width: 0;
+  }
+
+  .card-tab-selected::after {
+    border-width: 12px;
+    border-bottom-color: $white;
+    bottom: -0.05rem;
+    left: 50%;
+    margin-left: -6px;
+  }
+
+  .card-tab-selected::before {
+    border-width: 12px;
+    border-bottom-color: $grey-10;
+    bottom: 0;
+    left: 50%;
+    margin-left: -6px;
+  }
+
+  .card-tab-item {
+    display: inline-block;
+    width: 300px;
+    margin: auto;
+    cursor: pointer;
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    align-items: flex-start;
+    padding: 0.5rem 1rem 0.5rem 0;
+    cursor: pointer;
+
+    .primary-title {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin: auto;
+    }
+
+    .card-tab-subtitle {
+      font-size: 0.65rem;
+      line-height: 0.96rem;
+      color: $blue-10;
+      margin: auto;
+    }
+
+    .card-tab-badge {
+      border: solid 1px $grey-6;
+      border-radius: 0.72rem;
+      padding: 0 0.48rem;
+      line-height: 0.84rem;
+      margin: 0.24rem auto 0 auto;
+      font-size: 0.56rem;
+    }
+  }
+
+  .card-title-filter {
+    float: right;
+  }
+
+  app-grid {
+    width: 100%
+  }
+
+  .cell-label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+  }
+}

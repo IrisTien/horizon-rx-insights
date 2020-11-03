@@ -1,0 +1,33 @@
+<div class="policy-verify-modal">
+  <app-dynamic-form #policyVerifyForm [config]="policyConfig | async">
+  </app-dynamic-form>
+  <button type="button" class="btn btn-outline" (click)="verifyPolicy()" [attr.data-cy]="'clr-modal-ok-btn'">
+    Verify Policy
+  </button>
+  <ng-container *ngIf="resultVisible">
+    <app-readonly-key-value [data]="resultKeyValues"></app-readonly-key-value>
+    <h4>Agent Rule Settings</h4>
+    <div class="row">
+      <div class="clr-col-6">
+        <app-grid [config]="clientRuleGridConfig">
+        </app-grid>
+      </div>
+      <div class="clr-col-6">
+        <app-grid [config]="agentRuleGridConfig">
+        </app-grid>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #statusTemplate let-data>
+    <div class="text-center">
+      <clr-tooltip>
+        <span clrTooltipTrigger class="color-circle"
+          [style.backgroundColor]="statusColor[data.status?.toString().toUpperCase()]"></span>
+        <clr-tooltip-content clrPosition="right" clrSize="sm" *clrIfOpen>
+          <span>{{data.status}}</span>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+  </ng-template>
+</div>

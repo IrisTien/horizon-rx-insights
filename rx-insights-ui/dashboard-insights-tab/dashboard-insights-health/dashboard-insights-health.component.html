@@ -1,0 +1,126 @@
+<h4>Overall RX Component Health Status</h4>
+<div class="dashboard-insights-health card">
+  <div class="clr-row card-tab-container">
+    <ng-container *ngFor="let tab of tabs; index as i">
+      <div class="clr-col card-tab" [ngClass]="{'card-tab-selected': tab.selected}" (click)="selectTab(tab)">
+        <div class="card-tab-item">
+          <app-kendo-pie-chart [showPlaceholder]="true" [type]="chartType" [axisDefaults]="axisDefaults"
+            [seriesDefaults]="seriesDefaults" [seriesColors]="seriesColors" [series]="series" [centerTitle]="tab.title"
+            [data]="tab.data">
+          </app-kendo-pie-chart>
+          <!-- <div class="title-container">
+            <div class="primary-title">
+              <h5 class="mt-0">
+                {{tab.title}}</h5>
+            </div>
+            <div class="card-tab-subtitle" *ngIf="tab.subTitle">
+              {{tab.subTitle}}
+            </div>
+            <span class="card-tab-badge" *ngIf="tab.cornerValue">
+              {{tab.cornerValue}}
+            </span>
+          </div> -->
+        </div>
+        <div class="card-tab-divider" *ngIf="tabs.length - i > 1"></div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="clr-row" *ngIf="activeTab">
+    <div class="clr-col py-2 px-4">
+      <div *ngFor="let item of activeTab.detailData">
+        <ng-container [ngSwitch]="item.type">
+
+          <div *ngSwitchCase="healthDataType.STATUS_TRAIN">
+            <h4>{{item.title}}</h4>
+            <div class="mt-2" *ngFor="let statusItem of item.statusList">
+              <h5 class="mb-1">{{statusItem.label}}</h5>
+              <div *ngFor="let status of statusItem.statuses; let i=index;" class="d-inline-block">
+                <span class="label label-danger mx-1"
+                  [ngClass]="{'label-danger': status.status==='error', 'label-success': status.status==='ok', 'label-warning': status.status==='warning'}">{{status.label}}</span>
+                <clr-icon *ngIf="i < statusItem.statuses.length - 1" shape="arrow right"></clr-icon>
+              </div>
+              <div *ngIf="statusItem.description">
+                <label class="clr-control-label d-inline-block mr-1 mt-1">Health Description:</label>
+                <span>{{statusItem.description}}</span></div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="healthDataType.TOGGLE">
+            <h4>{{item.title}}</h4>
+            <clr-toggle-container>
+              <clr-toggle-wrapper>
+                <input type="checkbox" clrToggle [value]="item.value" [checked]="item.value" name="options" disabled />
+                <label>{{item.label}}</label>
+              </clr-toggle-wrapper>
+            </clr-toggle-container>
+          </div>
+
+          <div *ngSwitchCase="healthDataType.GRID">
+            <h4>{{item.title}}</h4>
+            <app-grid [config]="item.gridConfig">
+            </app-grid>
+          </div>
+
+          <div *ngSwitchCase="healthDataType.FORM">
+            <h4>{{item.title}}</h4>
+            <app-dynamic-form *ngIf="item.formConfig" [id]="item.id" [config]="item.formConfig | async">
+            </app-dynamic-form>
+            <div *ngFor="let button of item.formButtons">
+              <button type="button" class="btn btn-outline" (click)="button.handler()"
+                [attr.data-cy]="'clr-modal-ok-btn'">
+                {{button.label}}
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #statusTemplate let-data>
+    <div class="text-center">
+      <clr-tooltip>
+        <span clrTooltipTrigger class="color-circle"
+          [style.backgroundColor]="statusColor[data.status?.toUpperCase()]"></span>
+        <clr-tooltip-content clrPosition="right" clrSize="sm" *clrIfOpen>
+          <span>{{data.status}}</span>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+  </ng-template>
+
+  <ng-template #levelTemplate let-data>
+    <div class="text-center">
+      <clr-tooltip>
+        <span clrTooltipTrigger class="color-circle"
+          [style.backgroundColor]="statusColor[data.Level?.toUpperCase()]"></span>
+        <clr-tooltip-content clrPosition="right" clrSize="sm" *clrIfOpen>
+          <span>{{data.Level}}</span>
+        </clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+  </ng-template>
+
+  <ng-template #urlValueTemplate let-data>
+    <ng-container *ngIf="isValueString(data.Value)">
+      <span>{{data.Value}}</span>
+    </ng-container>
+    <ng-container *ngIf="!isValueString(data.Value)">
+      <div *ngFor="let item of data.Value | keyvalue">
+        <label class="cell-label">{{item.key}}:</label>
+        <span>{{item.value}}</span>
+      </div>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #smartCardStatusTemplate let-data>
+    <ng-container *ngIf="isValueString(data.status)">
+      <span>{{data.status}}</span>
+    </ng-container>
+    <ng-container *ngIf="!isValueString(data.status)">
+      <div *ngFor="let item of data.status">
+        <span>{{item}}</span>
+      </div>
+    </ng-container>
+  </ng-template>
+</div>
